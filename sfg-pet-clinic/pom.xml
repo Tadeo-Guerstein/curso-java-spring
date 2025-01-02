@@ -47,8 +47,8 @@
 	</build>
 
 	<scm>
-		<developerConnection>scm:git:http://TadeoBykom@bitbucket.org/tadeo0802/curso-java.git</developerConnection>
-	  <tag>sfg-pet-clinic-0.0.1</tag>
+		<developerConnection>scm:git:https://bitbucket.org/tadeo0802/curso-java.git</developerConnection>
+	  	<tag>sfg-pet-clinic-0.0.1</tag>
   </scm>
 
 </project>
