@@ -1,0 +1,17 @@
+spring:
+    profiles:
+        active:
+          - EN
+          - qa
+guru:
+  username: YmlUsername
+  password: YmlPassword
+  jdbcurl: YmlJDBCUrl
+
+---
+spring:
+  profiles: prod
+guru:
+  username: YmlProdUsername
+  password: YmlProdPassword
+  jdbcurl: YmlProdJDBCUrl
