@@ -1,5 +1,7 @@
 package guru.springframework.springrecipeapp.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -18,6 +20,16 @@ public class Ingredient {
     // no hay cascade por si se elimina un ingrediente no se elimina la receta
     @ManyToOne
     private Recipe recipe;
+
+    public Ingredient() {
+    }
+
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
+        this.recipe = recipe;
+    }
 
     public Long getId() {
         return id;
