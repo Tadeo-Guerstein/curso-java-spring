@@ -10,7 +10,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
@@ -26,7 +32,22 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipes() {
+    public void getRecipesByIdTest() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        Mockito.when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Optional<Recipe> recipeReturned = recipeRepository.findById(1L);
+
+        assertEquals("Null recipe returned", recipeReturned);
+        verify(recipeRepository).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    public void getRecipesTest() throws Exception {
         Recipe recipe = new Recipe();
         HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
@@ -36,6 +57,7 @@ public class RecipeServiceImplTest {
         Set<Recipe> recipeSet = recipeService.getRecipes();
 
         Assert.assertEquals(recipeSet.size(), 1);
-        Mockito.verify(recipeRepository, Mockito.times(1)).findAll();
+        verify(recipeRepository).findAll();
+        verify(recipeRepository, never()).findById(anyLong());
     }
 }
