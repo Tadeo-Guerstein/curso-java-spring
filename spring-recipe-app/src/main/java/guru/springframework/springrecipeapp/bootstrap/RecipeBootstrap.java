@@ -157,6 +157,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.getCategories().add(categoryMexican);
         guacRecipe.getCategories().add(categoryAmerican);
 
+        guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
+        guacRecipe.setServings(4);
+        guacRecipe.setSource("Simply Recipes");
+
         recipes.add(guacRecipe);
 
         Recipe tacosRecipe = new Recipe();

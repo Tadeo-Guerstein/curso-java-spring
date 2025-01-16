@@ -23,7 +23,9 @@
             <div class="panel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+                        <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                        <h1 class="panel-title" th:text="${recipe.description}"
+                        >Recipe Description Here!</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -32,9 +34,14 @@
                             </div>
                             <div class="col-md-9">
                                 <ul>
-                                    <li>cat one</li>
-                                    <li>cat two</li>
-                                    <li>cat three</li>
+                                    <li th:remove="all">cat one</li>
+                                    <li th:remove="all">cat two</li>
+                                    <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                    <li
+                                            th:each="category : ${recipe.categories}"
+                                            th:text="${category.getDescription()}">
+                                        cat three
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -43,13 +50,15 @@
                                 <h5>Prep Time:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>30 min</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getPrepTime()} + ' min'">30 min</p>
                             </div>
                             <div class="col-md-3">
                                 <h5>Difficulty:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>Easy</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getDifficulty()}">Easy</p>
                             </div>
                         </div>
                         <div class="row">
@@ -57,13 +66,15 @@
                                 <h5>Cooktime:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>30 min</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getCookTime()} + ' min'">30 min</p>
                             </div>
                             <div class="col-md-3">
                                 <h5>Servings:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>4</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getServings()}">4</p>
                             </div>
                         </div>
                         <div class="row">
@@ -71,13 +82,15 @@
                                 <h5>Source:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>30 min</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getSource()}">30 min</p>
                             </div>
                             <div class="col-md-3">
                                 <h5>URL:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p>http://www.example.com</p>
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <a th:text="${recipe.getUrl()}" th:href="${recipe.getUrl()}">http://www.example.com</a>
                             </div>
                         </div>
                     </div>
@@ -90,9 +103,14 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <ul>
-                                    <li>1 Cup of milk</li>
-                                    <li>1 Teaspoon of chocolate</li>
-                                    <li>1 Teaspoon of Sugar</li>
+                                    <li th:remove="all">1 Cup of milk</li>
+                                    <li th:remove="all">1 Teaspoon of chocolate</li>
+                                    <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                    <li th:each="ingredient : ${recipe.getIngredients()}"
+                                        th:text="${(ingredient.getAmount() +
+                                        ' ' + ingredient.getUom().getDescription() +
+                                        ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -104,8 +122,9 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                            <d iv class="col-md-12">
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getDirections()}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
                                     dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
                                     nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
                                     quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
@@ -129,7 +148,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                <!--/*@thymesVar id="recipe" type="guru.springframework.springrecipeapp.model.Recipe"*/-->
+                                <p th:text="${recipe.getNotes().getRecipeNotes()}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
                                     dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
                                     nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
                                     quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet
