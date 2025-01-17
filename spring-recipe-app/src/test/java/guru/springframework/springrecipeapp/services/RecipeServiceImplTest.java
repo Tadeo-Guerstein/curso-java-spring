@@ -86,4 +86,20 @@ public class RecipeServiceImplTest {
         verify(recipeRepository).findAll();
         verify(recipeRepository, never()).findById(anyLong());
     }
+
+    @Test
+    public void testDeleteById() throws Exception {
+        // Behavior driven development
+
+        // given
+        Long idToDelete = Long.valueOf(2L);
+
+        // when
+        recipeService.deleteById(idToDelete);
+
+        // no hay "when", porque retorna null "deleteById"
+
+        // then
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
 }
