@@ -10,6 +10,7 @@ import guru.springframework.springrecipeapp.repository.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -98,5 +99,27 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+    }
+
+    @Override
+    public void deleteById(Long recipeId, Long id) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+        if(recipeOptional.isPresent()){
+            Recipe recipe = recipeOptional.get();
+
+            Optional<Ingredient> ingredientOptional = recipe
+                    .getIngredients()
+                    .stream()
+                    .filter(ingredient -> ingredient.getId().equals(id))
+                    .findFirst();
+
+            if(ingredientOptional.isPresent()){
+                Ingredient ingredientToDelete = ingredientOptional.get();
+                recipe.getIngredients().remove(ingredientToDelete);
+                ingredientToDelete.setRecipe(null);
+                recipeRepository.save(recipe);
+            }
+        }
     }
 }

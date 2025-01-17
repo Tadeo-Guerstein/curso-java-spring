@@ -3,7 +3,6 @@ package guru.springframework.springrecipeapp.controllers;
 import guru.springframework.springrecipeapp.commands.IngredientCommand;
 import guru.springframework.springrecipeapp.commands.RecipeCommand;
 import guru.springframework.springrecipeapp.commands.UnitOfMeasureCommand;
-import guru.springframework.springrecipeapp.model.Recipe;
 import guru.springframework.springrecipeapp.services.IngredientService;
 import guru.springframework.springrecipeapp.services.RecipeService;
 import guru.springframework.springrecipeapp.services.UnitOfMeasureService;
@@ -71,7 +70,6 @@ public class IngredientsController {
         return "/recipe/ingredients/ingredientform";
     }
 
-
     @PostMapping
     @RequestMapping("recipe/{recipeId}/ingredient")
     public String saveOrUpdate(@ModelAttribute IngredientCommand command){
@@ -79,5 +77,13 @@ public class IngredientsController {
         log.debug("saved receipe id:" + savedCommand.getRecipeId());
         log.debug("saved ingredient id:" + savedCommand.getId());
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/delete")
+    public String saveOrUpdate(@PathVariable String recipeId, @PathVariable String id, Model model){
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }
