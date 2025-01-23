@@ -7,4 +7,5 @@ public class CustomerDTO {
     private Long id;
     private String name;
     private String lastname;
+    private String url;
 }

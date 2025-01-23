@@ -4,6 +4,7 @@ import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.services.CustomerService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.hibernate.boot.jaxb.SourceType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class CustomerControllerTest {
@@ -64,5 +66,28 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")));
+    }
+
+    @Test
+    public void createCustomer() throws Exception {
+        CustomerDTO customer = new CustomerDTO();
+        customer.setId(1L);
+        customer.setName("Tadeo");
+        customer.setLastname("Guerstein");
+
+        CustomerDTO returnDto = new CustomerDTO();
+        returnDto.setId(customer.getId());
+        returnDto.setName(customer.getName());
+        returnDto.setLastname(customer.getLastname());
+        returnDto.setUrl("/api/v1/customers/1");
+
+        when(customerService.createCustomer(customer)).thenReturn(returnDto);
+
+        mockMvc.perform(post("/api/v1/customers/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(AbstractRestControllerTest.asJsonString(customer)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")))
+                .andExpect(jsonPath("$.url", IsEqual.equalTo("/api/v1/customers/1")));
     }
 }
