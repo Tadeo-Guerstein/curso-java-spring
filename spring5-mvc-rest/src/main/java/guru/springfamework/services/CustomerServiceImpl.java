@@ -2,6 +2,7 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setUrl("/api/v1/customers/" + customer.getId());
+                    customerDTO.setUrl(getUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -71,8 +72,12 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer = customerRepository.save(customer);
 
         CustomerDTO newCustomerDTO = customerMapper.customerToCustomerDTO(savedCustomer);
-        newCustomerDTO.setUrl("/api/v1/customers/" + savedCustomer.getId());
+        newCustomerDTO.setUrl(getUrl(savedCustomer.getId()));
 
         return newCustomerDTO;
+    }
+
+    private String getUrl(Long id) {
+        return CustomerController.BASE_URL + "/" + id;
     }
 }
