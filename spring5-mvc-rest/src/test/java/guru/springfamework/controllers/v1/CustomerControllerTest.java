@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class CustomerControllerTest {
@@ -88,6 +89,30 @@ public class CustomerControllerTest {
                 .content(AbstractRestControllerTest.asJsonString(customer)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")))
+                .andExpect(jsonPath("$.url", IsEqual.equalTo("/api/v1/customers/1")));
+    }
+
+    @Test
+    public void updateCustomer() throws Exception {
+        CustomerDTO customer = new CustomerDTO();
+        customer.setId(1L);
+        customer.setName("Tadeo");
+        customer.setLastname("Guerstein");
+
+        CustomerDTO returnDto = new CustomerDTO();
+        returnDto.setId(customer.getId());
+        returnDto.setName(customer.getName());
+        returnDto.setLastname(customer.getLastname());
+        returnDto.setUrl("/api/v1/customers/1");
+
+        when(customerService.updateCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDto);
+
+        mockMvc.perform(put("/api/v1/customers/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(AbstractRestControllerTest.asJsonString(customer)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")))
+                .andExpect(jsonPath("$.lastname", IsEqual.equalTo("Guerstein")))
                 .andExpect(jsonPath("$.url", IsEqual.equalTo("/api/v1/customers/1")));
     }
 }
