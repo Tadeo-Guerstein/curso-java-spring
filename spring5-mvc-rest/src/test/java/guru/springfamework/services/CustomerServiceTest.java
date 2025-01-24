@@ -98,4 +98,13 @@ public class CustomerServiceTest {
         assertEquals("/api/v1/customers/1", savedDto.getUrl());
 
     }
+
+    @Test
+    public void deleteCustomerById() {
+        Long id = 1L;
+
+        customerService.deleteCustomerById(id);
+
+        verify(customerRepository, times(1)).deleteById(anyLong());
+    }
 }

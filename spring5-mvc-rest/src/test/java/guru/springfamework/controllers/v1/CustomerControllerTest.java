@@ -19,11 +19,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.core.IsEqual.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class CustomerControllerTest {
@@ -66,7 +64,7 @@ public class CustomerControllerTest {
         mockMvc.perform(get("/api/v1/customers/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")));
+                .andExpect(jsonPath("$.name", equalTo("Tadeo")));
     }
 
     @Test
@@ -88,8 +86,8 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(AbstractRestControllerTest.asJsonString(customer)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")))
-                .andExpect(jsonPath("$.url", IsEqual.equalTo("/api/v1/customers/1")));
+                .andExpect(jsonPath("$.name", equalTo("Tadeo")))
+                .andExpect(jsonPath("$.url", equalTo("/api/v1/customers/1")));
     }
 
     @Test
@@ -111,8 +109,39 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(AbstractRestControllerTest.asJsonString(customer)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", IsEqual.equalTo("Tadeo")))
-                .andExpect(jsonPath("$.lastname", IsEqual.equalTo("Guerstein")))
-                .andExpect(jsonPath("$.url", IsEqual.equalTo("/api/v1/customers/1")));
+                .andExpect(jsonPath("$.name", equalTo("Tadeo")))
+                .andExpect(jsonPath("$.lastname", equalTo("Guerstein")))
+                .andExpect(jsonPath("$.url", equalTo("/api/v1/customers/1")));
+    }
+
+    @Test
+    public void testPatchCustomer() throws Exception {
+        // given
+        CustomerDTO customer = new CustomerDTO();
+        customer.setName("Fred");
+
+        CustomerDTO returnDTO = new CustomerDTO();
+        returnDTO.setName(customer.getName());
+        returnDTO.setLastname("Flintstone");
+        returnDTO.setUrl("/api/v1/customers/1");
+
+        when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
+
+        mockMvc.perform(patch("/api/v1/customers/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(AbstractRestControllerTest.asJsonString(customer)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo("Fred")))
+                .andExpect(jsonPath("$.lastname", equalTo("Flintstone")))
+                .andExpect(jsonPath("$.url", equalTo("/api/v1/customers/1")));
+    }
+
+    @Test
+    public void testDeleteCustomer() throws Exception {
+        mockMvc.perform(delete("/api/v1/customers/1")
+            .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).deleteCustomerById(anyLong());
     }
 }
