@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@Profile("default")
-public class Bootstrap implements CommandLineRunner {
+@Profile("dev")
+public class BootstrapMySQL implements CommandLineRunner {
     private CategoryRepository categoryRepository;
     private CustomerRepository customerRepository;
     private VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
+    public BootstrapMySQL(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
         this.vendorRepository = vendorRepository;
@@ -27,13 +27,14 @@ public class Bootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("Running MySQL");
         loadCategories();
         loadCustomers();
         loadVendors();
     }
 
     private void loadVendors() {
-        System.out.println("Loading vendors H2");
+        System.out.println("Loading vendors MySQL");
 
         Vendor vendor1 = new Vendor();
         vendor1.setName("Vendor 1");
@@ -44,7 +45,7 @@ public class Bootstrap implements CommandLineRunner {
     }
 
     private void loadCustomers() {
-        System.out.println("Loading customers H2");
+        System.out.println("Loading customers MySQL");
 
         Customer customer1 = new Customer();
         customer1.setId(1L);
@@ -82,7 +83,7 @@ public class Bootstrap implements CommandLineRunner {
     }
 
     private void loadCategories() {
-        System.out.println("Loading categories H2");
+        System.out.println("Loading categories MySQL");
 
         Category fruits = new Category();
         fruits.setName("Fruits");
