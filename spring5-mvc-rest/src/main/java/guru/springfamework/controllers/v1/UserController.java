@@ -7,6 +7,8 @@ import guru.springfamework.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(UserController.USER_URL)
 public class UserController {
@@ -22,6 +24,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserListDTO getAllUsers(){
         return new UserListDTO(userService.getAllUsers());
+    }
+
+    @GetMapping("/collection")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDTO> getAllUsersCollection(){
+        return userService.getAllUsers();
     }
 
     @GetMapping("{id}")
