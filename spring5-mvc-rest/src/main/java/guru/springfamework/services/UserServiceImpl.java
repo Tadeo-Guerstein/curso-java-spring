@@ -4,7 +4,9 @@ import guru.springfamework.api.v1.mapper.UserMapper;
 import guru.springfamework.api.v1.model.UserDTO;
 import guru.springfamework.domain.User;
 import guru.springfamework.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         if(userRepository.existsUserByEmail(userDTO.getEmail())){
-            throw new RuntimeException("Email in use");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Email " + userDTO.getEmail() + " in use");
         }
 
         return saveAndReturnUser(userMapper.convertUserDtoToUser(userDTO));
